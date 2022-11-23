@@ -10,10 +10,18 @@ class Nomination(models.Model):
         ('H', 'Head Of State'),
         ('D', 'DCE')
     )
-    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    nominee = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     portfolio = models.CharField(max_length=3, choices=PORTFOLIO_CHOICES)
     description = models.TextField()
-    acceptance = models.BooleanField()
+    acceptance = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.student
+        return self.nominee
+
+
+class Voting(models.Model):
+    contestant = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    votes = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f'{self.contestant} - {self.votes}'
