@@ -20,8 +20,9 @@ class Nomination(models.Model):
 
 
 class Voting(models.Model):
-    contestant = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    contestant = models.OneToOneField(User, on_delete=models.CASCADE, null=True, related_name='contestant')
     votes = models.IntegerField(default=0)
+    voter = models.ForeignKey(User, on_delete=models.CASCADE, null = True, related_name='voter')
 
     def __str__(self):
         return f'{self.contestant} - {self.votes}'

@@ -11,4 +11,4 @@ class VotingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Voting
         fields = '__all__'
-        read_only_fields = ['nominee']
+        read_only_fields = ['contestant', 'voter']
