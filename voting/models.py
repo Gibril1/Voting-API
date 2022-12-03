@@ -11,18 +11,19 @@ class Nomination(models.Model):
         ('D', 'DCE')
     )
     nominee = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    campaign_name = models.CharField(unique=True, null=False, max_length=20, default='')
     portfolio = models.CharField(max_length=3, choices=PORTFOLIO_CHOICES)
     description = models.TextField()
     acceptance = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.nominee
+        return self.campaign_name
 
 
 class Voting(models.Model):
     contestant = models.OneToOneField(User, on_delete=models.CASCADE, null=True, related_name='contestant')
     votes = models.IntegerField(default=0)
-    voter = models.ForeignKey(User, on_delete=models.CASCADE, null = True, related_name='voter')
+    voter = models.OneToOneField(User, on_delete=models.CASCADE, null = True, related_name='voter')
 
     def __str__(self):
         return f'{self.contestant} - {self.votes}'

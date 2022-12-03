@@ -96,8 +96,11 @@ class VotingView(APIView):
             return Voting.objects.get(id=id)
         except Voting.DoesNotExist:
             raise Http404
+ 
+        
     
     def get(self, request, id):
+       
         nominee = self.get_nominee(id)
         nominee.votes+=1
         serializer = VotingSerializer(nominee, data=request.data)
