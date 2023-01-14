@@ -23,6 +23,9 @@ class Portfolio(models.Model):
 
     portfolio = models.CharField(max_length=3, choices=PORTFOLIO_CHOICES)
 
+    def __str__(self):
+        return self.portfolio
+
 
 class Nomination(models.Model):
     campaign_name = models.CharField(unique=True, null=False, max_length=20, default='')
@@ -36,6 +39,9 @@ class Nomination(models.Model):
     def __str__(self):
         return self.campaign_name
 
+class Candidate(models.Model):
+    nomination = models.OneToOneField(Nomination, on_delete=models.CASCADE)
+    
 
 class Voting(models.Model):
     contestant = models.OneToOneField(User, on_delete=models.CASCADE, null=True, related_name='contestant')

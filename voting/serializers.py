@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Nomination, Voting, Portfolio
+from .models import Nomination, Voting, Portfolio, Candidate
 
 class NominationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,4 +16,9 @@ class VotingSerializer(serializers.ModelSerializer):
 class PortfolioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Portfolio
+        fields = '__all__'
+
+class CandidateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Candidate
         fields = '__all__'
