@@ -4,8 +4,8 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from voting.serializers import VotingSerializer
-from voting.models import Nomination, Voting, Candidate
+from ..serializers import VotingSerializer
+from ..models import Nomination, Voting, Candidate
 
 class ApprovalView(APIView):
     def get_nomination(self, id):
