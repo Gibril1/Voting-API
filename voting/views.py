@@ -4,10 +4,24 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
-from .serializers import NominationSerializer, VotingSerializer
-from .models import Nomination, Voting
+from .serializers import NominationSerializer, VotingSerializer, PortfolioSerializer
+from .models import Nomination, Voting, Portfolio
 
-# Create your views here.
+class PortfolioView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def post(self, request):
+        serializer = PortfolioSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request):
+        portfolios = Portfolio.objects.all()
+        serializer = PortfolioSerializer(portfolios, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        
 class NominationView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -27,6 +41,8 @@ class NominationView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
+# these routes are for the user to edit the details of his/her nomination
 class NominationDetailView(APIView):
     permission_classes = [IsAuthenticated]
     def get_nomination(self, id):
@@ -55,6 +71,7 @@ class NominationDetailView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+# these routes are for admin users to approve the nominees
 class ApprovalView(APIView):
     permission_classes = [IsAdminUser]
     def get_nomination(self, id):
@@ -81,7 +98,7 @@ class ApprovalView(APIView):
         nominee = Voting.objects.create(
             contestant = nomination.nominee
         )
-        nominee.save()
+        nominee.save(voter=request.user)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -89,6 +106,7 @@ class ApprovalView(APIView):
 
 
 
+# for these routes, any authenticated user can vote for his preferred candidate
 class VotingView(APIView):
     permission_classes = [IsAuthenticated]
     def get_nominee(self, id):
@@ -100,7 +118,6 @@ class VotingView(APIView):
         
     
     def get(self, request, id):
-       
         nominee = self.get_nominee(id)
         nominee.votes+=1
         serializer = VotingSerializer(nominee, data=request.data)
