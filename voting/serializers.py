@@ -2,8 +2,7 @@ from rest_framework import serializers
 from .models import (
     Nomination, 
     Voting, 
-    Portfolio, 
-    Candidate, 
+    Portfolio,  
     Election
 )
 
@@ -24,10 +23,7 @@ class PortfolioSerializer(serializers.ModelSerializer):
         model = Portfolio
         fields = '__all__'
 
-class CandidateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Candidate
-        fields = '__all__'
+
 
 class ElectionSerializer(serializers.ModelSerializer):
     class Meta:

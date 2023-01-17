@@ -19,14 +19,13 @@ class UserEditDeletePermission(BasePermission):
 class NominationView(APIView):
     permission_classes = [IsAuthenticated]
 
-    # getting all the users who have picked nomination forms
     def get(self, request):
         nominees = Nomination.objects.all()
         serializer = NominationSerializer(nominees, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     
-    # route for filing nominations
+    # for filing nomnation forms
     def post(self, request):
         serializer = NominationSerializer(data=request.data)
         if serializer.is_valid():
@@ -64,8 +63,6 @@ class NominationDetailView(APIView, UserEditDeletePermission):
         nomination.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
-# these routes are for admin users to approve the nominees
     
 
     

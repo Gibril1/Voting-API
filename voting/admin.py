@@ -4,7 +4,6 @@ from .models import (
     Voting, 
     Portfolio, 
     Election,
-    Candidate
 )
 
 
@@ -13,4 +12,4 @@ admin.site.register(Nomination)
 admin.site.register(Voting)
 admin.site.register(Portfolio)
 admin.site.register(Election)
-admin.site.register(Candidate)
+

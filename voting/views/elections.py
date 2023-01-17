@@ -8,13 +8,13 @@ from ..models import Election
 
 class ElectionView(APIView):
     permission_classes=[IsAdminUser]
+
     def get(self, request):
         elections = Election.objects.all()
         serializer = ElectionSerializer(elections, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
-        print(request)
         serializer = ElectionSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
