@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'voting',
-    # 'auth',
+    'users',
     'rest_framework',
     'django_filters'
 ]
