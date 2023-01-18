@@ -1,4 +1,13 @@
 from django.urls import path
+
+from .views.elections import (
+    ElectionView,
+    ElectionDetailView
+)
+from .views.portfolios import (
+    PortfolioDetailsView,
+    PortfolioView
+)
 from .views.nominations import (
     NominationView, 
     NominationDetailView, 
@@ -7,15 +16,6 @@ from .views.votings import (
     ApprovalView,
     VotingView,
     ContestantsView
-)
-from .views.portfolios import (
-    PortfolioDetailsView,
-    PortfolioView
-)
-
-from .views.elections import (
-    ElectionView,
-    ElectionDetailView
 )
 
 urlpatterns = [

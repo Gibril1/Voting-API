@@ -10,6 +10,7 @@ class Election(models.Model):
     updatedAt = models.DateField(auto_now_add=True)
     startAt = models.DateTimeField(null=False)
     endAt = models.DateTimeField(null=True)
+    createdBy = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.name
@@ -42,7 +43,7 @@ class Nomination(models.Model):
     acceptance = models.BooleanField(default=False)
     
     def __str__(self):
-        return self.campaign_name
+        return self.acceptance
 
     
 
