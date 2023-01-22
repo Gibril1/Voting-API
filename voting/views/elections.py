@@ -1,11 +1,21 @@
 from django.http import Http404
 from rest_framework import status
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, BasePermission, SAFE_METHODS
 from rest_framework.response import Response
 from ..serializers import ElectionSerializer
 from ..models import Election
 
+
+class UserEditDeletePermission(BasePermission):
+    message = 'Editing nominations is just for the user who created it'
+
+    def has_object_permission(self, request, view, obj):
+        if request.method in SAFE_METHODS:
+            return True
+        
+        return obj.nominee == request.user
+        
 class ElectionView(APIView):
     permission_classes=[IsAdminUser]
 
@@ -43,7 +53,7 @@ class ElectionDetailView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     
     def delete(self, request, id):

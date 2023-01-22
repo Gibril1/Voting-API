@@ -6,10 +6,10 @@ from django.contrib.auth.models import User
 class Election(models.Model):
     name = models.CharField(null=False, max_length=255)
     description = models.TextField(null=True)
-    createdAt = models.DateField(default=timezone.now)
-    updatedAt = models.DateField(auto_now_add=True)
-    startAt = models.DateTimeField(null=False)
-    endAt = models.DateTimeField(null=True)
+    createdAt = models.DateTimeField(default=timezone.now)
+    updatedAt = models.DateTimeField(auto_now_add=True)
+    startAt = models.DateTimeField(null=True)
+    duration = models.DurationField(null=True)
     createdBy = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
@@ -18,15 +18,7 @@ class Election(models.Model):
 
 
 class Portfolio(models.Model):
-    PORTFOLIO_CHOICES = (
-        ('P', 'President'),
-        ('M', 'Minister'),
-        ('MP', 'Parliamentarian'),
-        ('H', 'Head Of State'),
-        ('D', 'DCE')
-    )
-
-    portfolio = models.CharField(max_length=3, choices=PORTFOLIO_CHOICES,  unique=True, null=True, default='')
+    portfolio = models.CharField(max_length=30, unique=True, null=True, default='')
     description = models.TextField(default='')
     election = models.ForeignKey(Election, on_delete=models.CASCADE)
     category = models.CharField(max_length=200, null=True)

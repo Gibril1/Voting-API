@@ -19,14 +19,14 @@ from .views.votings import (
 )
 
 urlpatterns = [
-    path('', NominationView.as_view()),
-    path('<int:id>/', NominationDetailView.as_view()),
-    path('approve/<int:id>', ApprovalView.as_view()),
-    path('vote/<int:id>', VotingView.as_view()), 
+    path('<int:id>/', NominationView.as_view()),
+    path('nomination/<int:id>/', NominationDetailView.as_view()),
+    path('approve/<int:id>/', ApprovalView.as_view()),
+    path('vote/<int:id>/', VotingView.as_view()), 
     path('contestants/', ContestantsView.as_view() ),
-    path('portfolio/', PortfolioView.as_view()),
-    path('portfolio/<int:id>', PortfolioDetailsView.as_view()),
+    path('portfolio/<int:id>', PortfolioView.as_view()),
+    path('portfolio-detail/<int:id>/', PortfolioDetailsView.as_view()),
     path('election/', ElectionView.as_view()),
-    path('election/<int:id>', ElectionDetailView.as_view()),
+    path('election/<int:id>/', ElectionDetailView.as_view()),
 
 ]

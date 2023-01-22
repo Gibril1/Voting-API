@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, BasePermission, SAFE_METHODS
 from rest_framework.response import Response
 from ..serializers import NominationSerializer
-from ..models import Nomination
+from ..models import Nomination, Portfolio
 
 class UserEditDeletePermission(BasePermission):
     message = 'Editing nominations is just for the user who created it'
@@ -19,19 +19,24 @@ class UserEditDeletePermission(BasePermission):
 class NominationView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        nominees = Nomination.objects.all()
-        serializer = NominationSerializer(nominees, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get_portfolio(self, id):
+        try:
+            return Portfolio.objects.get(id=id)
+        except Portfolio.DoesNotExist:
+            raise Http404    
 
-    
     # for filing nomnation forms
-    def post(self, request):
-        serializer = NominationSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(nominee=request.user)
-            return Response(serializer.data, status= status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def get(self, request, id):
+        portfolio = self.get_portfolio(id)
+        nomination = Nomination.objects.create(
+            portfolio = portfolio,
+            nominee = request.user,
+            acceptance = False
+        )
+        serializer = NominationSerializer(nomination)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+
 
 
 
