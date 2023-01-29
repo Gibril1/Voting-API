@@ -17,8 +17,6 @@ class UserEditDeletePermission(BasePermission):
         return obj.nominee == request.user
         
 class ElectionView(APIView):
-    permission_classes=[IsAdminUser]
-
     def get(self, request):
         elections = Election.objects.all()
         serializer = ElectionSerializer(elections, many=True)
@@ -32,8 +30,8 @@ class ElectionView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ElectionDetailView(APIView):
-    permission_classes = [IsAdminUser]
+class ElectionDetailView(APIView, UserEditDeletePermission):
+    permission_classes = [UserEditDeletePermission]
     def get_election(self, id):
         try: 
             return Election.objects.get(id=id)

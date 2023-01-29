@@ -34,7 +34,9 @@ class NominationView(APIView):
             acceptance = False
         )
         serializer = NominationSerializer(nomination)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        if nomination:
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 
 
