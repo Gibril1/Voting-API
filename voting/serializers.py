@@ -25,7 +25,3 @@ class PortfolioSerializer(serializers.ModelSerializer):
 
 
 
-class ElectionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Election
-        fields = '__all__'

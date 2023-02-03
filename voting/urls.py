@@ -1,9 +1,6 @@
 from django.urls import path
 
-from .views.elections import (
-    ElectionView,
-    ElectionDetailView
-)
+
 from .views.portfolios import (
     PortfolioDetailsView,
     PortfolioView
@@ -26,7 +23,6 @@ urlpatterns = [
     path('contestants/', ContestantsView.as_view() ),
     path('portfolio/<int:id>', PortfolioView.as_view()),
     path('portfolio-detail/<int:id>/', PortfolioDetailsView.as_view()),
-    path('election/', ElectionView.as_view()),
-    path('election/<int:id>/', ElectionDetailView.as_view()),
+    
 
 ]

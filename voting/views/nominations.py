@@ -7,14 +7,7 @@ from rest_framework.response import Response
 from ..serializers import NominationSerializer
 from ..models import Nomination, Portfolio
 
-class UserEditDeletePermission(BasePermission):
-    message = 'Editing nominations is just for the user who created it'
 
-    def has_object_permission(self, request, view, obj):
-        if request.method in SAFE_METHODS:
-            return True
-        
-        return obj.nominee == request.user
 
 class NominationView(APIView):
     permission_classes = [IsAuthenticated]
@@ -43,8 +36,7 @@ class NominationView(APIView):
 
 
 # these routes are for the user to edit the details of his/her nomination
-class NominationDetailView(APIView, UserEditDeletePermission):
-    permission_classes = [UserEditDeletePermission]
+class NominationDetailView(APIView):
     def get_nomination(self, id):
         try:
             return Nomination.objects.get(id=id)
