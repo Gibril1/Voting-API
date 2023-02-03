@@ -3,7 +3,6 @@ from .models import (
     Nomination, 
     Voting, 
     Portfolio, 
-    Election,
 )
 
 
@@ -11,5 +10,5 @@ from .models import (
 admin.site.register(Nomination)
 admin.site.register(Voting)
 admin.site.register(Portfolio)
-admin.site.register(Election)
+
 
