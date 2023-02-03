@@ -18,7 +18,10 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('voting/', include('voting.urls')),
-    path('', include('users.urls')),
+    path('api/voting/', include('voting.urls')),
+    path('api/auth/', include('users.urls')),
+    path('api/elections/', include('elections.urls')),
+    path('api/nominations/', include('nominations.urls')),
+    path('api/portfolios/', include('portfolios.urls')),
     path('api-auth/', include('rest_framework.urls',namespace=''))
 ]

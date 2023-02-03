@@ -23,15 +23,17 @@ class NominationView(APIView):
     # for filing nomnation forms
     def get(self, request, id):
         portfolio = self.get_portfolio(id)
-        nomination = Nomination.objects.create(
-            portfolio = portfolio,
-            nominee = request.user,
-            acceptance = False
-        )
-        serializer = NominationSerializer(nomination)
-        if nomination:
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            nomination = Nomination.objects.create(
+                portfolio = portfolio,
+                nominee = request.user,
+                acceptance = False
+            )
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+        serializer = NominationSerializer(nomination)  
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
 
 class NominationDetailView(RetrieveUpdateDestroyAPIView, UserEditDeletePermission):
     permission_classes = [UserEditDeletePermission]

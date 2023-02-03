@@ -1,6 +1,7 @@
 from rest_framework.serializers import ModelSerializer
 from .models import Nomination
 
+
 class NominationSerializer(ModelSerializer):
     class Meta:
         model = Nomination

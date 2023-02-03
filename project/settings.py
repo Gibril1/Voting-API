@@ -56,6 +56,8 @@ INSTALLED_APPS = [
     'voting',
     'users',
     'elections',
+    'nominations',
+    'portfolios',
     'rest_framework',
     'rest_framework_simplejwt',
     'django_filters'

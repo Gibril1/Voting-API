@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from elections.models import Election
+from portfolios.models import Portfolio
 # Create your models here.
 class Nomination(models.Model):
     nominee = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
