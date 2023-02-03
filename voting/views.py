@@ -6,8 +6,8 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from users.serializers import UserSerializer
-from ..serializers import NominationSerializer
-from ..models import Nomination, Voting
+from nominations.models import Nomination
+from .models import  Voting
 
 class ApprovalView(APIView):
     permission_classes = [IsAdminUser]

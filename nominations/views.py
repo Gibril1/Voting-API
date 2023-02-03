@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .serializers import NominationSerializer
 from .models import Nomination
+from portfolios.models import Portfolio
 from project.permissions import UserEditDeletePermission
 
 # Create your views here.
