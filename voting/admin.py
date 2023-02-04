@@ -4,9 +4,16 @@ from .models import (
     
 )
 
+class VotingAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'voter',
+        'contestant'
+    )
+
 
 # Register your models here.
-admin.site.register(Voting)
+admin.site.register(Voting, VotingAdmin)
 
 
 

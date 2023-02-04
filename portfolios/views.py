@@ -17,18 +17,17 @@ class CreatePortfolioView(APIView):
         except Election.DoesNotExist:
             raise Http404
 
-    def get_portfolio(self, id):
-        try:
-            return Portfolio.objects.get(id=id)
-        except Portfolio.DoesNotExist:
-            raise Http404
-    
     def post(self, request, id):
         election = self.get_election(id)
+        data = request.data
         if election.createdBy != request.user:
             message = 'You cannot create portfolios for this election'
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
-        data = request.data
+        portfolio_name_exists = Portfolio.objects.filter(portfolio=data['portfolio']).filter(election=election).first()
+
+        if portfolio_name_exists:
+            message = f"Portfolio  with portfolio name {data['portfolio']} already exists"
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
         portfolio = Portfolio.objects.create(
             election = election,
             description = data['description'],
@@ -39,10 +38,6 @@ class CreatePortfolioView(APIView):
         serializer = PortfolioSerializer(portfolio)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
-    
-
-        
-
 class ListPortfoliosView(ListAPIView):
     queryset = Portfolio.objects.all()
     serializer_class =  PortfolioSerializer

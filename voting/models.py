@@ -9,4 +9,4 @@ class Voting(models.Model):
     election = models.ForeignKey(Election, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.voter
+        return self.voter.first_name

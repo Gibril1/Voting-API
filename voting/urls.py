@@ -11,7 +11,7 @@ from .views import (
 urlpatterns = [
     path('approve/<int:id>/', ApprovalView.as_view()),
     path('vote/<int:id>/', VotingView.as_view()), 
-    path('contestants/', ContestantsView.as_view() )
+    path('contestants/<int:id>/', ContestantsView.as_view() )
     
 
 ]
