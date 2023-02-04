@@ -16,9 +16,18 @@ class CreatePortfolioView(APIView):
             return Election.objects.get(id=id)
         except Election.DoesNotExist:
             raise Http404
+
+    def get_portfolio(self, id):
+        try:
+            return Portfolio.objects.get(id=id)
+        except Portfolio.DoesNotExist:
+            raise Http404
     
     def post(self, request, id):
         election = self.get_election(id)
+        if election.createdBy != request.user:
+            message = 'You cannot create portfolios for this election'
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
         data = request.data
         portfolio = Portfolio.objects.create(
             election = election,
@@ -29,6 +38,9 @@ class CreatePortfolioView(APIView):
         )
         serializer = PortfolioSerializer(portfolio)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    
+
         
 
 class ListPortfoliosView(ListAPIView):

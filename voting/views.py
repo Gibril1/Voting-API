@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from users.serializers import UserSerializer
 from nominations.models import Nomination
+from elections.models import Election
 from .models import  Voting
 
 class ApprovalView(APIView):
@@ -17,19 +18,26 @@ class ApprovalView(APIView):
         except Nomination.DoesNotExist:
             raise Http404
     
-    def get(self, request, id):
+    def head(self, request, id):
         nomination = self.get_nomination(id)
         nomination.acceptance = True
         nomination.save()
-        return Response(nomination, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_200_OK)
 
 
 class ContestantsView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        nominations = Nomination.objects.filter(acceptance=True).all()
-        users = User.objects.filter(nominee__in=nominations)
+    def get_election(self, id):
+        try:
+            return Election.objects.get(id=id)
+        except Election.DoesNotExist:
+            raise Http404
+
+    def get(self, request, id):
+        election = self.get_election(id)
+        nominations = Nomination.objects.filter(acceptance=True).filter(election=election).all()
+        users = User.objects.filter(id__in=[nomination.nominee for nomination in nominations]).all()
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -45,14 +53,17 @@ class VotingView(APIView):
  
         
     
-    def get(self, request, id):
+    def head(self, request, id):
         nominee = self.get_nominee(id)
+        if nominee.acceptance == False:
+            message = 'This nominee is not qualified'
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
         voting = Voting(
             contestant = nominee.nominee,
             voter = request.user
         )
         voting.save()
-        return Response(voting, status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
     
 
     

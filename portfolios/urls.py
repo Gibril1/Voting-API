@@ -3,6 +3,6 @@ from .views import ListPortfoliosView, PortfolioDetailsView,  CreatePortfolioVie
 
 urlpatterns = [
     path('', ListPortfoliosView.as_view()),
-    path('create/<int:id>', CreatePortfolioView.as_view()),
-    path('detail/<int:id>/', PortfolioDetailsView.as_view()),
+    path('create/<int:id>/', CreatePortfolioView.as_view()),
+    path('<int:pk>/', PortfolioDetailsView.as_view()),
 ]

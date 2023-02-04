@@ -1,11 +1,13 @@
 from django.urls import path
 
 from .views import (
-    ElectionView,
-    ElectionDetailView
+    ListElectionsView,
+    ElectionDetailView,
+    CreateElectionView
 )
 
 urlpatterns = [
-    path('', ElectionView.as_view()),
+    path('', ListElectionsView.as_view()),
+    path('create/', CreateElectionView.as_view()),
     path('<int:pk>/', ElectionDetailView.as_view()),
 ]
